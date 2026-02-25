@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export default function Hero() {
     const ref = useRef(null);
@@ -10,21 +10,20 @@ export default function Hero() {
 
     return (
         <section id="inicio" ref={ref} className="relative min-h-screen flex items-center overflow-hidden">
-            {/* Parallax background video/image */}
+            {/* Parallax background with Ken Burns effect */}
             <motion.div
                 style={{ y }}
-                className="absolute inset-0 z-0"
+                className="absolute inset-0 z-0 overflow-hidden"
             >
-                <video
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    poster="https://picsum.photos/seed/campvid/1920/1080"
+                <motion.img
+                    src="https://picsum.photos/seed/campvid/1920/1080"
+                    alt=""
+                    referrerPolicy="no-referrer"
                     className="w-full h-full object-cover"
-                >
-                    <source src="https://cdn.coverr.co/videos/coverr-walking-on-a-trail-1437/1080p.mp4" type="video/mp4" />
-                </video>
+                    initial={{ scale: 1 }}
+                    animate={{ scale: 1.15 }}
+                    transition={{ duration: 20, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
+                />
                 <div className="absolute inset-0 bg-dark/70" />
             </motion.div>
 
@@ -80,7 +79,7 @@ export default function Hero() {
                             href="#nosotros"
                             className="bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-full font-medium hover:bg-white/20 transition-all duration-300 flex items-center gap-2"
                         >
-                            <Play className="w-5 h-5" /> Conoce Más
+                            ▶ Conoce Más
                         </a>
                     </motion.div>
                 </div>
