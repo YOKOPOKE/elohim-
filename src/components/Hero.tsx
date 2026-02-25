@@ -1,53 +1,106 @@
-import { motion } from 'motion/react';
-import { ArrowRight } from 'lucide-react';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'motion/react';
+import { ArrowRight, Play } from 'lucide-react';
 
 export default function Hero() {
+    const ref = useRef(null);
+    const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+    const y = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+    const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
     return (
-        <section id="inicio" className="pt-32 pb-20 md:pt-48 md:pb-32 px-6">
-            <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
+        <section id="inicio" ref={ref} className="relative min-h-screen flex items-center overflow-hidden">
+            {/* Parallax background video/image */}
+            <motion.div
+                style={{ y }}
+                className="absolute inset-0 z-0"
+            >
+                <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    poster="https://picsum.photos/seed/campvid/1920/1080"
+                    className="w-full h-full object-cover"
                 >
-                    <h1 className="text-5xl md:text-7xl font-bold leading-[1.1] tracking-tight mb-6">
-                        Transforma tu <br />
-                        <span className="text-primary">propósito</span>
-                    </h1>
-                    <p className="text-lg text-gray-600 mb-8 max-w-lg leading-relaxed">
-                        Únete a nuestros campamentos y retiros espirituales. Un espacio diseñado para reconectar, crecer y encontrar tu propósito en Dios.
-                    </p>
-                    <div className="flex flex-wrap gap-4">
-                        <a href="#campamentos" className="bg-primary text-white px-8 py-4 rounded-full font-medium hover:bg-primary-dark transition-all hover:shadow-lg hover:shadow-primary/30 flex items-center gap-2">
-                            Ver Campamentos <ArrowRight className="w-5 h-5" />
-                        </a>
-                    </div>
-                </motion.div>
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    className="relative"
-                >
-                    <div className="aspect-[4/5] rounded-3xl overflow-hidden bg-gray-100 relative">
-                        <img
-                            src="https://picsum.photos/seed/camp/800/1000"
-                            alt="Campamento Plan V Elohim"
-                            className="w-full h-full object-cover"
-                            referrerPolicy="no-referrer"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-                        <div className="absolute bottom-8 left-8 right-8 text-white">
-                            <div className="bg-white/20 backdrop-blur-md inline-block px-4 py-2 rounded-full text-sm font-medium mb-3">
-                                Próximo Evento
-                            </div>
-                            <h3 className="text-3xl font-bold">Campamento de Verano 2026</h3>
+                    <source src="https://cdn.coverr.co/videos/coverr-walking-on-a-trail-1437/1080p.mp4" type="video/mp4" />
+                </video>
+                <div className="absolute inset-0 bg-dark/70" />
+            </motion.div>
+
+            <motion.div
+                style={{ opacity }}
+                className="relative z-10 max-w-7xl mx-auto px-6 py-32 md:py-48 w-full"
+            >
+                <div className="max-w-3xl">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                    >
+                        <div className="inline-block px-4 py-2 bg-primary/20 backdrop-blur-sm text-primary rounded-full text-sm font-bold tracking-wider uppercase mb-8 border border-primary/30">
+                            Plan V Elohim — Chiapas, México
                         </div>
-                    </div>
+                    </motion.div>
+
+                    <motion.h1
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.4 }}
+                        className="text-5xl md:text-7xl lg:text-8xl font-bold leading-[1.05] tracking-tight mb-8 text-white"
+                    >
+                        Descubre tu
+                        <br />
+                        <span className="text-primary">propósito</span>
+                    </motion.h1>
+
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.6 }}
+                        className="text-lg md:text-xl text-gray-300 mb-10 max-w-xl leading-relaxed"
+                    >
+                        Únete a nuestros campamentos y retiros espirituales. Un espacio diseñado para reconectar, crecer y encontrar tu propósito en Dios.
+                    </motion.p>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.8 }}
+                        className="flex flex-wrap gap-4"
+                    >
+                        <a
+                            href="#campamentos"
+                            className="bg-primary text-white px-8 py-4 rounded-full font-medium hover:bg-white hover:text-dark transition-all duration-300 hover:shadow-lg hover:shadow-primary/30 flex items-center gap-2 group"
+                        >
+                            Ver Campamentos
+                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        </a>
+                        <a
+                            href="#nosotros"
+                            className="bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-full font-medium hover:bg-white/20 transition-all duration-300 flex items-center gap-2"
+                        >
+                            <Play className="w-5 h-5" /> Conoce Más
+                        </a>
+                    </motion.div>
+                </div>
+
+                {/* Scroll indicator */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.5 }}
+                    className="absolute bottom-10 left-1/2 -translate-x-1/2"
+                >
+                    <motion.div
+                        animate={{ y: [0, 12, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                        className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center pt-2"
+                    >
+                        <div className="w-1.5 h-3 bg-white/60 rounded-full" />
+                    </motion.div>
                 </motion.div>
-            </div>
+            </motion.div>
         </section>
     );
 }
